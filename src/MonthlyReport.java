@@ -3,94 +3,112 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-/*
-Месячные отчёты состоят из четырёх полей:
-item_name — название товара;
-is_expense — одно из двух значений: TRUE или FALSE. Обозначает, является ли запись тратой (TRUE) или доходом (FALSE);
-quantity — количество закупленного или проданного товара;
-sum_of_one — стоимость одной единицы товара. Целое число.
-
-item_name,is_expense,quantity,sum_of_one
-Воздушные шарики,TRUE,5000,5
-Автоматы с мороженным,TRUE,12,15000
-Продажа мороженного,FALSE,1000,120
- */
 
 public class MonthlyReport {
     String[] namesMonth = {"Январь", "Февраль", "Март"};
     ShapitoCalc shapitoCalc = new ShapitoCalc();
-    ArrayList<String> monthNameList = new ArrayList<>();
-    ArrayList<Boolean> expenseOrIncome = new ArrayList<>();
-    ArrayList<Double> amountList = new ArrayList<>();
-    HashMap<String, Integer> income = new HashMap();
-    ArrayList<Double> expense = new ArrayList<>();
-
-    String readFileContentsOrNull (String path){
-        try {
-            return Files.readString(Path.of(path));
-        } catch (IOException e) {
-            System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
-            return null;
-        }
-    }
+    HashMap<String, HashMap<String, ArrayList<Integer>>> monthIncomeHashMap = new HashMap<>();
+    HashMap<String, HashMap<String, ArrayList<Integer>>> monthExpenseHashMap = new HashMap<>();
 
     void stringSeparator() {
-        ArrayList<String[]> allMonthArrayList = new ArrayList<>();
+        HashMap<String, ArrayList<Integer>> income = new HashMap<>();
+        HashMap<String, ArrayList<Integer>> expense = new HashMap<>();
+        int tmpCounter = 0;
+        for (int i = 1; i < 4; i++) {  // читаем 3 файла из папки
+            String readFile = readFileContentsOrNull("/home/andrey/dev/hw2/java-sprint2-hw/resources/" + "m.20210" + i + ".csv");
+            // далее каждый файл перекладываем во временный массив
+            String[] monthArray = (readFile).split(System.lineSeparator());  // в массив кладём строки, с данными по 4-м столбцам
 
-        for (int i = 1;  i < 4; i++) {
-            String redFile = readFileContentsOrNull("/home/andrey/dev/hw2/java-sprint2-hw/resources/" + "m.20210" + i + ".csv");
-            String[] monthArray = (redFile).split(System.lineSeparator());  // в массив кладём 7 строк, содержащих данные по 4-м столбцам
-            allMonthArrayList.add(monthArray);   // формируем список из трёх массивов
+            for (int j = 1; j < monthArray.length; j++) {    // перебираем все строки в массиве, кроме заглавной
+                String[] tmpStringArray = monthArray[j].split(",");     // разбиваем строку, кладём в массив по 4 элемента
 
-        }
-            for (int i = 0; i < yearArray.length; i++) {  //
-            yearArrayList.add(i, (yearArray[i]).split(",")); // Раскладываем в список из 7-ми массивов по 3 элемента
-        }
-        // Разложить содержимое списка по нужным нам объектам класса YearReport
-        for (int i = 1; i < yearArray.length; i++) {
-            String[] tmpArray = yearArrayList.get(i);
-            for (int j = 0; j < tmpArray.length; j++) {
-                if (j == 0) {
-                    if (tmpArray[j].equals("01")) {
-                        monthNameList.add("Январь");
-                    } else if (tmpArray[j].equals("02")) {
-                        monthNameList.add("Февраль");
-                    } else if (tmpArray[j].equals("03")) {
-                        monthNameList.add("Март");
+                for (int k = 1; k < tmpStringArray.length; k++) {             // будем раскладывать строку вначале по временным переменным,
+                    // затем в объекты класса - хэшМэпы
+                    // задаём временные переменные
+                    ArrayList<Integer> quantityPriceArray = new ArrayList<>();  // сюда положим количество и сумму
+                    boolean isExpense = true;                                   // сюда положим метку затрата / приход
+                    String key = "";                                            // сюда положим ключ - наименование затраты / прихода
+
+                    for (String s : tmpStringArray) {
+                        System.out.println(s);
                     }
 
-                } else if (j == 1) {
-                    amountList.add(Double.parseDouble(tmpArray[j]));
-                } else {
-                    expenseOrIncome.add(Boolean.parseBoolean(tmpArray[j]));
+
+                    if (k == 1) {
+                        key = tmpStringArray[0];
+                    } else if (k == 2) {
+                        isExpense = Boolean.parseBoolean(tmpStringArray[1]);
+                    } else if (k == 3) {
+                        quantityPriceArray.add(Integer.parseInt(tmpStringArray[2]));
+                    } else {
+                        quantityPriceArray.add(Integer.parseInt(tmpStringArray[3]));
+                    }
+                    if (isExpense) {
+                        expense.put(key, quantityPriceArray);
+                    } else {
+                        income.put(key, quantityPriceArray);
+                    }
+                    monthIncomeHashMap.put(namesMonth[k - 1], income);
+                    monthExpenseHashMap.put(namesMonth[k - 1], expense);
+
+                    //}
+                }
+            }
+            //System.out.println("Месячные отчёты загружены!");
+            System.out.println("Производится тестовый вывод всех данных:");
+            for (String keyTmp : monthIncomeHashMap.keySet()) {
+
+                for (String keyTmp2 : monthIncomeHashMap.get(keyTmp).keySet()) {
+                    for (Integer x : monthIncomeHashMap.get(keyTmp).get(keyTmp2)) {
+                        System.out.println(x);
+                    }
                 }
             }
         }
-        // Разложить отдельно приход и расход
-        for (int i = 0; i < expenseOrIncome.size(); i++) {
-            if (expenseOrIncome.get(i)) {
-                expense.add(amountList.get(i));
-            } else {
-                income.add(amountList.get(i));
+        /*for (String keyTmp : monthExpenseHashMap.keySet()) {
+            System.out.println("Ключи словаря  monthExpenseHashMap" + keyTmp);
+            for (String keyTmp2 : monthExpenseHashMap.get(keyTmp).keySet()) {
+                System.out.println("Здесь должны быть ключи вложенного хэшмэпа" + keyTmp2);
             }
         }
-        System.out.println("Годовой отчёт загружен в программу");
+
+        tmpCounter ++;
+                System.out.println("Номер вывода" + tmpCounter);
+                System.out.println(monthArray[j]);
+
+*/
+         /*   //for (String inventory : officeTool.keySet())
+            //    System.out.println(inventory);
+
+        for (int y = 0; y < monthIncomeHashMap.size(); y++) {
+            System.out.println(monthIncomeHashMap.size());
+        }
+
+            */
+
+                //ArrayList<Integer> al = l.get(key);
+                //for (Integer j : al) {
+                  //  System.out.println(key + j);
+                //}
+
+        }
+
+
+    public void printResultMonth() {
+        for (String i : namesMonth) {
+            System.out.println("Отчётный месяц " + i);
+
+            System.out.println("   Самый прибыльный товар: " + shapitoCalc.bestSellerExpenser(monthIncomeHashMap.get(i), false) + ". Выручка составила: " + shapitoCalc.sumOfBestSeller + " рублей.");
+            //System.out.println("   Самая большая трата: " + shapitoCalc.bestSellerExpenser(monthExpenseHashMap.get(i), true) + ". Затраты составили: " + shapitoCalc.sumOfBestExpenser + " рублей.");
+        }
     }
 
-
-    public void printResultYear() {
-        for (String i : monthNameList){
-            System.out.println(i);
+        String readFileContentsOrNull (String path){
+            try {
+                return Files.readString(Path.of(path));
+            } catch (IOException e) {
+                System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
+                return null;
+            }
         }
-        System.out.println("По итогам 2021-го года:");
-        System.out.println("   прибыль по каждому месяцу составила: ");
-        for (int i = 0; i < income.size(); i++) {
-            System.out.println("        " + namesMonth[i] + "  " + shapitoCalc.profit(income.get(i), expense.get(i)));
-        }
-        System.out.println("   средний расход за все месяцы составил: " + shapitoCalc.doMean(expense));
-        System.out.println("   средний доход за все месяцы составил: " + shapitoCalc.doMean(income));
     }
-
-
-
-}

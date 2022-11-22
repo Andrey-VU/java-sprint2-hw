@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class YearlyReport {
     ShapitoCalc shapitoCalc = new ShapitoCalc();
-
     ArrayList<String> monthNameList = new ArrayList<>();
     ArrayList<Boolean> expenseOrIncome = new ArrayList<>();
     ArrayList<Double> amountList = new ArrayList<>();

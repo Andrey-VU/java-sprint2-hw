@@ -5,14 +5,16 @@ public  class Main {
         Scanner scanner = new Scanner(System.in);
         int userInput = 111;
         YearlyReport yearlyReport = new YearlyReport();
-        ShapitoResult shapitoResult = new ShapitoResult();
+        MonthlyReport monthlyReport = new MonthlyReport();
+        ShapitoCalc shapitoCalc = new ShapitoCalc();
 
         printMenu();
 
         while (userInput != 0) {
             userInput = scanner.nextInt();
             if (userInput == 1){   // Считать все месячные отчёты
-                System.out.println("Команда 1 находится в разработке");
+                System.out.println("Команда 1 находится на апробации");
+                monthlyReport.stringSeparator();
             }
 
             else if (userInput == 2){   // Считать годовой отчёт
@@ -24,8 +26,13 @@ public  class Main {
             }
 
             else if (userInput == 4){ // Вывести инфо о месячном отчёте
-                System.out.println("Команда 4 находится в разработке");
-                // предусмотреть проверку, считал ли пользователь отчёт
+                System.out.println("Команда 4 находится на апробации");
+                if (monthlyReport.monthIncomeHashMap.isEmpty()) {
+                    System.out.println("Вы не выполнили загрузку отчёта в программу. Возврат в главное меню");
+                }
+                else {
+                    monthlyReport.printResultMonth();
+                }
             }
 
             else if (userInput == 5){  // Вывести информацию о годовом отчёте
