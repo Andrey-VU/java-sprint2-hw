@@ -24,10 +24,36 @@ public class YearlyReport {
         }
 
     public void printResultYear() {
+        int sumOfIncome = 0;
+        int sumOfExpense = 0;
+        ArrayList<Integer> incomeYR = new ArrayList<>(); // Из годовых отчётов все суммарные помесячные доходы
+        ArrayList<Integer> expenseYR = new ArrayList<>(); // Из годовых отчётов все суммарные помесячные расходы
+        for (int i = 0; i < allData.size(); i++) {
+            int expense;
+            int income;
+            if (allData.get(i).isExpense) {
+                expense = allData.get(i).sumOfOne;
+                sumOfExpense += expense;
+                expenseYR.add(expense);
+            }
+            else {
+                income = allData.get(i).sumOfOne;
+                sumOfIncome += income;
+                incomeYR.add(income);
+            }
+        }
+
+
         System.out.println("По итогам 2021-го года:");
         System.out.println("   прибыль по каждому месяцу составила: ");
-        checker.printYReport();
+
+        for (int i = 0; i < namesMonth.length; i++) {
+            System.out.println("        " + namesMonth[i] + "  " + (incomeYR.get(i) - expenseYR.get(i)) + "рублей.");
+        }
+        System.out.println("   средний расход за все месяцы составил: " + sumOfExpense / expenseYR.size() );
+        System.out.println("   средний доход за все месяцы составил: " + sumOfIncome / incomeYR.size() );
     }
+
 
         String readFileContentsOrNull (String path){
             try {

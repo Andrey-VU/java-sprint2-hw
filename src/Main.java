@@ -16,7 +16,6 @@ public  class Main {
             } else if (userInput == 2){   // Считать годовой отчёт
                 yearlyReport.stringSeparator();
             } else if (userInput == 3){ // Сверить отчёты
-                System.out.println("Команда 3 находится на апробации");
                 if (monthlyReport.allData.isEmpty() | yearlyReport.allData.isEmpty()) {
                     System.out.println("Отчёты не загружены. Возврат в главное меню");
                 }

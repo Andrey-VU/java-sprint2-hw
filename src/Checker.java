@@ -64,12 +64,7 @@ public class Checker {
         }
         return Boolean.parseBoolean(tmpBoolean);
     }
-    public void printYReport() {
-        for (int i = 0; i < namesMonth.length; i++) {
-            System.out.println("        " + namesMonth[i] + "  " + (incomeYR.get(i) - expenseYR.get(i)) + "рублей.");
-        }
-        System.out.println("   средний расход за все месяцы составил: " + allExpensesYR / expenseYR.size() );
-        System.out.println("   средний доход за все месяцы составил: " + allIncomesYR / incomeYR.size() );
-        }
+
+
 
 }
