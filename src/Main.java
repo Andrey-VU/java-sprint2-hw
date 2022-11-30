@@ -5,7 +5,7 @@ public  class Main {
         int userInput = 111;
         YearlyReport yearlyReport = new YearlyReport();
         MonthlyReport monthlyReport = new MonthlyReport();
-        Checker checker = new Checker(monthlyReport, yearlyReport);
+        Checker checker;
 
         printMenu();
 
@@ -21,6 +21,7 @@ public  class Main {
                     System.out.println("Отчёты не загружены. Возврат в главное меню");
                 }
                 else {
+                    checker = new Checker(monthlyReport, yearlyReport);
                     if (checker.check()) {
                         System.out.println("Сверка успешно завершена. Данные корректны");
                     }

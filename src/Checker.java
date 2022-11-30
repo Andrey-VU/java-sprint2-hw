@@ -35,10 +35,10 @@ public class Checker {
         allIncomesYR = sumOfIncome;
         allExpensesYR = sumOfExpense;
 
-        for (String s : namesMonth) {
+        for (int i = 0; i < namesMonth.length; i++) {
             int sumOfIncomeMR = 0;
             int sumOfExpenseMR = 0;
-            for (Record recordCh : monthlyReport.allData.get(s)) {
+            for (Record recordCh : monthlyReport.allData.get(namesMonth[i])) {
                 if (recordCh.isExpense) {
                     sumOfExpenseMR += recordCh.quantity * recordCh.sumOfOne;
                 }
@@ -65,9 +65,8 @@ public class Checker {
         return Boolean.parseBoolean(tmpBoolean);
     }
     public void printYReport() {
-
         for (int i = 0; i < namesMonth.length; i++) {
-            System.out.println("        " + namesMonth[i] + "  " + (incomeYR.get(i) - expenseYR.get(i)));
+            System.out.println("        " + namesMonth[i] + "  " + (incomeYR.get(i) - expenseYR.get(i)) + "рублей.");
         }
         System.out.println("   средний расход за все месяцы составил: " + allExpensesYR / expenseYR.size() );
         System.out.println("   средний доход за все месяцы составил: " + allIncomesYR / incomeYR.size() );
