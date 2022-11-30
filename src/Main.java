@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 public  class Main {
     public  static void main(String[] args) {
@@ -6,37 +5,41 @@ public  class Main {
         int userInput = 111;
         YearlyReport yearlyReport = new YearlyReport();
         MonthlyReport monthlyReport = new MonthlyReport();
-        ShapitoCalc shapitoCalc = new ShapitoCalc();
+        Checker checker = new Checker(monthlyReport, yearlyReport);
 
         printMenu();
 
         while (userInput != 0) {
             userInput = scanner.nextInt();
             if (userInput == 1){   // Считать все месячные отчёты
-                System.out.println("Команда 1 находится на апробации");
                 monthlyReport.stringSeparator();
-            }
-
-            else if (userInput == 2){   // Считать годовой отчёт
+            } else if (userInput == 2){   // Считать годовой отчёт
                 yearlyReport.stringSeparator();
-                }
-
-            else if (userInput == 3){ // Сверить отчёты
-                System.out.println("Команда 3 находится в разработке");
-            }
-
-            else if (userInput == 4){ // Вывести инфо о месячном отчёте
-                System.out.println("Команда 4 находится на апробации");
-                if (monthlyReport.monthIncomeHashMap.isEmpty()) {
-                    System.out.println("Вы не выполнили загрузку отчёта в программу. Возврат в главное меню");
+            } else if (userInput == 3){ // Сверить отчёты
+                System.out.println("Команда 3 находится на апробации");
+                if (monthlyReport.allData.isEmpty() | yearlyReport.allData.isEmpty()) {
+                    System.out.println("Отчёты не загружены. Возврат в главное меню");
                 }
                 else {
-                    monthlyReport.printResultMonth();
+                    if (checker.check()) {
+                        System.out.println("Сверка успешно завершена. Данные корректны");
+                    }
+                    else {
+                        System.out.println(checker.wrongMonth + " содержит ошибочные данные!");
+                    }
                 }
+
+            }else if (userInput == 4){ // Вывести инфо о месячном отчёте
+                if (monthlyReport.allData.isEmpty()) {
+                    System.out.println("Вы не выполнили загрузку отчёта в программу. Возврат в главное меню");
+                }
+               else {
+                    monthlyReport.printResultMonth();
+               }
             }
 
             else if (userInput == 5){  // Вывести информацию о годовом отчёте
-                if (yearlyReport.amountList.isEmpty()) { // проверяем, считал ли пользователь годовой отчёт
+                if (yearlyReport.allData.isEmpty()) { // проверяем, считал ли пользователь годовой отчёт
                     System.out.println("Вы не выполнили загрузку отчёта в программу. Возврат в главное меню");
                     }
                 else {
