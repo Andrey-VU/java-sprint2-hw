@@ -19,12 +19,12 @@ public class Checker {
         int sumOfIncome = 0;
         int sumOfExpense = 0;
         for (int i = 0; i < yearlyReport.allData.size(); i++) {
-            int expense = 0;
-            int income = 0;
+            int expense;
+            int income;
             if (yearlyReport.allData.get(i).isExpense) {
                 expense = yearlyReport.allData.get(i).sumOfOne;
                 sumOfExpense += expense;
-                expenseYR.add(income);
+                expenseYR.add(expense);
             }
             else {
                 income = yearlyReport.allData.get(i).sumOfOne;
@@ -52,17 +52,17 @@ public class Checker {
     }
 
     public boolean check() {
-        for (int i = 0; i < namesMonth.length; i++) {
-            if (incomeYR.get(i) == incomeMR.get(i) & expenseMR.get(i) == expenseMR.get(i)) {
-                return true;
+        String tmpBoolean = "false";
+        for (int j = 0; j < namesMonth.length; j++) {
+            if ((incomeYR.get(j) == incomeMR.get(j)) & (expenseMR.get(j) == expenseMR.get(j))) {
+                tmpBoolean = "true";
             }
             else {
-                wrongMonth = namesMonth[i];
-                return false;
+                wrongMonth = namesMonth[j];
+                tmpBoolean = "false";
             }
         }
-
-        return false;
+        return Boolean.parseBoolean(tmpBoolean);
     }
     public void printYReport() {
 
