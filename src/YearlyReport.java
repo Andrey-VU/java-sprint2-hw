@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class YearlyReport {
-    String[] namesMonth = {"Январь", "Февраль", "Март"};
+    String[] namesMonth = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
     ArrayList<Record> allData = new ArrayList<>();
     Checker checker;
 
@@ -47,7 +47,7 @@ public class YearlyReport {
         System.out.println("По итогам 2021-го года:");
         System.out.println("   прибыль по каждому месяцу составила: ");
 
-        for (int i = 0; i < namesMonth.length; i++) {
+        for (int i = 0; i < allData.size() / 2; i++) {
             System.out.println("        " + namesMonth[i] + "  " + (incomeYR.get(i) - expenseYR.get(i)) + "рублей.");
         }
         System.out.println("   средний расход за все месяцы составил: " + sumOfExpense / expenseYR.size() );

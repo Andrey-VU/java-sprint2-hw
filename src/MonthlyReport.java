@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class MonthlyReport {
-    String[] namesMonth = {"Январь", "Февраль", "Март"};
+    YearlyReport yearlyReport = new YearlyReport();
     HashMap<String, ArrayList<Record>> allData = new HashMap<String, ArrayList<Record>>();
     void stringSeparator() {
         for (int i = 1; i < 4; i++) {  // читаем 3 файла из папки
@@ -24,19 +24,20 @@ public class MonthlyReport {
                 Record record = new Record(keyTitle, quantity, price, isExpense);
                 storageForAll.add(record);    // собираем данные по всем операциям за месяц в один массив
             }
-            allData.put(namesMonth[i - 1], storageForAll);  // данные за все месяцы
+            allData.put(yearlyReport.namesMonth[i - 1], storageForAll);  // данные за все месяцы
         }
         System.out.println("Месячные отчёты загружены!");
     }
 
     public void printResultMonth() {
-        for (String i : namesMonth) {
-            System.out.println("Отчётный месяц " + i);
+        for (int i = 0; i < allData.size(); i++) {
+            System.out.println("Отчётный месяц " + yearlyReport.namesMonth[i]);
             System.out.println("   Самый прибыльный товар:");
-            printBestSellerExpenser(i, allData.get(i) , false);
+            printBestSellerExpenser(yearlyReport.namesMonth[i], allData.get(yearlyReport.namesMonth[i]) , false);
             System.out.println("   Самые большие затраты:");
-            printBestSellerExpenser(i, allData.get(i), true);
+            printBestSellerExpenser(yearlyReport.namesMonth[i], allData.get(yearlyReport.namesMonth[i]), true);
         }
+
     }
 
     void printBestSellerExpenser(String month, ArrayList<Record> monthIE, boolean isExpense) {

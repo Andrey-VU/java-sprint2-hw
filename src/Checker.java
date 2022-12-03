@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Checker {
-    String[] namesMonth = {"Январь", "Февраль", "Март"};
+
     MonthlyReport monthlyReport;
     YearlyReport yearlyReport;
     ArrayList<Integer> incomeYR = new ArrayList<>(); // Из годовых отчётов все суммарные помесячные доходы
@@ -35,10 +35,10 @@ public class Checker {
         allIncomesYR = sumOfIncome;
         allExpensesYR = sumOfExpense;
 
-        for (int i = 0; i < namesMonth.length; i++) {
+        for (int i = 0; i < yearlyReport.allData.size() / 2; i++) {
             int sumOfIncomeMR = 0;
             int sumOfExpenseMR = 0;
-            for (Record recordCh : monthlyReport.allData.get(namesMonth[i])) {
+            for (Record recordCh : monthlyReport.allData.get(yearlyReport.namesMonth[i])) {
                 if (recordCh.isExpense) {
                     sumOfExpenseMR += recordCh.quantity * recordCh.sumOfOne;
                 }
@@ -52,17 +52,17 @@ public class Checker {
     }
 
     public boolean check() {
-        String tmpBoolean = "false";
-        for (int j = 0; j < namesMonth.length; j++) {
-            if ((incomeYR.get(j) == incomeMR.get(j)) & (expenseMR.get(j) == expenseMR.get(j))) {
-                tmpBoolean = "true";
+        boolean tmpBoolean = false;
+        for (int j = 0; j < yearlyReport.allData.size() / 2; j++) {
+            if ((incomeYR.get(j).equals(incomeMR.get(j))) & (expenseMR.get(j).equals(expenseMR.get(j)))) {
+                tmpBoolean = true;
             }
             else {
-                wrongMonth = namesMonth[j];
-                tmpBoolean = "false";
+                wrongMonth = yearlyReport.namesMonth[j];
+                tmpBoolean = false;
             }
         }
-        return Boolean.parseBoolean(tmpBoolean);
+        return tmpBoolean;
     }
 
 
